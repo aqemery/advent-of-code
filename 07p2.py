@@ -3,10 +3,7 @@ import sys
 bags = {}
 
 def visit(b):
-  count = 1
-  for c in bags[b]:
-    count += visit(c[0]) * c[1] 
-  return count 
+  return 1 + sum([visit(c[0]) * c[1] for c in bags[b]])
 
 for l in sys.stdin.readlines():
   parent, children = l.split(' contain ')
