@@ -1,33 +1,49 @@
 import sys
 
-grid = {(x,y):c
+empty = set()
+filled = {(x,y) 
   for y, l in enumerate(sys.stdin.readlines())
   for x, c in enumerate(l.strip())
-  if c != '.'
+  if c == 'L'
 }
 
-around =[(x,y) for x in range(-1,2) for y in range(-1,2)]
+def add(a, b):
+  return tuple(sum(z) for z in zip(a,b)) 
+
+around = [(x,y) for x in range(-1,2) for y in range(-1,2)]
 around.remove((0,0))
 
 def run():
-  new_grid = {}
-  for t in grid:
-    keys = [tuple(sum(z) for z in zip(a,t)) for a in around]
-    count = sum([1 for k in keys if grid.get(k) == '#'])
+  new_empty = set()
+  new_filled = set()
 
-    v = grid[t]
-    if v == 'L' and count == 0:
-      new_grid[t] = '#'
-    elif v == '#' and count >= 4:
-      new_grid[t] = 'L'
+  for t in empty:
+    for a in around:
+      check = add(t, a)
+      if check in filled:
+        new_empty.add(t)
+        break
     else:
-      new_grid[t] = v
-  return new_grid
+      new_filled.add(t)
 
+  for t in filled:
+    count = 0
+    for a in around:
+      check = add(t, a)
+      if check in filled:
+        count += 1
+    if count >=4:
+      new_empty.add(t)
+    else:
+      new_filled.add(t)
 
-last = run()
-while  last != grid:
-  grid = last
-  last = run()
+  return new_empty, new_filled
 
-print(list(grid.values()).count('#'))
+last = empty
+empty, filled = run()
+
+while last != empty:
+  last = empty
+  empty, filled = run()
+
+print(len(filled))
