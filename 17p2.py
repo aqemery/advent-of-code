@@ -22,6 +22,7 @@ def is_alive(cord):
   return False
 
 for _ in range(6):
+  already_checked = set()
   new_alive = set()
   for a in alive:
     adj = adjacent(a)
@@ -29,8 +30,10 @@ for _ in range(6):
     for n in adj: 
       if n in alive:
         count += 1
-      elif is_alive(n):
-        new_alive.add(n)
+      elif not n in already_checked:
+        already_checked.add(n)
+        if is_alive(n):
+          new_alive.add(n)
     if count in [2,3]:
       new_alive.add(a)
   alive = new_alive
