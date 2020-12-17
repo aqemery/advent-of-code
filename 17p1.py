@@ -1,5 +1,4 @@
 import sys
-from collections import Counter
 
 alive = {(x,y,0) for y, l in enumerate(sys.stdin.readlines())
   for x, c in enumerate(l) if c == '#'}
