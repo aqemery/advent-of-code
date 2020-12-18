@@ -1,23 +1,19 @@
 import sys
 import re
 
+def solve_part(r,line):
+  while m := re.search(r, line):
+    s = m.group()
+    line = line.replace(s,str(eval(s)))
+  return line
+
+regxs = ['\d+(\+\d+)+', '\(\d+(\*\d+)+\)', '\(\d*\)']  
 out = 0
 
 for line in sys.stdin.readlines():
   line = line.strip().replace(' ','')
-
   while '(' in line or '+' in line:
-    while m := re.search('\d+(\+\d+)+', line):
-      s = m.group()
-      line = line.replace(s,str(eval(s)))
-
-    while m := re.search('\(\d+(\*\d+)+\)', line):
-      s = m.group()
-      line = line.replace(s,str(eval(s)))
-
-    while m := re.search('\(\d*\)', line):
-      s = m.group()
-      line = line.replace(s,str(eval(s)))
-  
+    for r in regxs:
+      line = solve_part(r, line)
   out += eval(line)
-print(out )
+print(out)
