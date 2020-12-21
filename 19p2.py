@@ -10,12 +10,16 @@ for r in rules:
   k, v = r.split(': ')
   tree[k] = '+'.join(['"'+s+'"' if s == '|' else f'sub("{s}")' for s in v.split()])
 
+depth = 10
+
 def sub(k):
+  global depth
   try:
-    if k in['8','11']:
-      return '(' + eval(tree[k]) +'+)'
-    elif k == '11':
-      return '(' + sub('42') +'(' +sub('11') + '+)' + sub('31') + ')'
+    if k == '8':
+      return '(' + sub('42') +'+)'
+    elif k == '11' and depth > 0:
+      depth -= 1
+      return '(' + sub('42') +'('+ sub('11') +'?)' + sub('31') + ')'
     return '(' + eval(tree[k]) +')'
   except KeyError:
     return k
