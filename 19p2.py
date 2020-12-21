@@ -12,6 +12,10 @@ for r in rules:
 
 def sub(k):
   try:
+    if k in['8','11']:
+      return '(' + eval(tree[k]) +'+)'
+    elif k == '11':
+      return '(' + sub('42') +'(' +sub('11') + '+)' + sub('31') + ')'
     return '(' + eval(tree[k]) +')'
   except KeyError:
     return k
