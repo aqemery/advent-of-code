@@ -8,10 +8,6 @@ def move_aim(x):
   global aim
   aim += x
 
-def move_depth(x):
-  global depth
-  depth += x
-
 def move_horizontal(x):
   global horizontal, depth
   horizontal += x
