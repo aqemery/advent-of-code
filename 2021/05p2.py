@@ -9,18 +9,13 @@ def add_coord(x,y):
     vent_map[(x,y)] += 1
   except KeyError:
     vent_map[(x,y)] = 1
-  
-def get_step(v1, v2):
-  dx = v2[0]-v1[0]
-  dy = v2[1]-v1[1]
-  return [0 if d == 0 else d/abs(d) for d in [dx, dy]]
 
 for v in vents:
-  step = get_step(*v)
-  current, end = v
-  add_coord(*current)
-  while current != end:
-    current = list(map(sum,zip(current,step)))
-    add_coord(*current)
+  c, end = v
+  step = [0 if d == 0 else d/abs(d) for d in [end[0]-c[0], end[1]-c[1]]]
+  add_coord(*c)
+  while c != end:
+    c = list(map(sum,zip(c,step)))
+    add_coord(*c)
 
 print(len([v for v in vent_map.values() if v > 1]))
