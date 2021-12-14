@@ -1,21 +1,14 @@
 import sys
-from collections import defaultdict
+from collections import defaultdict, Counter
+from functools import reduce
 import math
 
 polymer, pairs = sys.stdin.read().split('\n\n')
 rules = {a:[a[0]+b,b+a[1]] for a, b in [p.split(' -> ') for p in pairs.split('\n')]}
 
-counts = defaultdict(int)
-
-for p in [polymer[i:i+2] for i in range(len(polymer)-1)]:
-  counts[p] += 1
-
-for i in range(40):
-  nc = defaultdict(int)
-  for k, v in counts.items():
-    for p in rules[k]:
-      nc[p] +=v
-  counts = nc
+counts = Counter(a+b for a, b in zip(polymer, polymer[1:]))
+for _ in range(40):
+  counts = reduce(lambda a, b: a + b, [Counter({p:v for  p in rules[k]}) for k, v in counts.items()])
 
 letter_counts = defaultdict(int)
 for k, v in counts.items():
