@@ -1,5 +1,5 @@
 import sys
-from collections import Counter, defaultdict
+from collections import defaultdict
 import math
 
 polymer, pairs = sys.stdin.read().split('\n\n')
