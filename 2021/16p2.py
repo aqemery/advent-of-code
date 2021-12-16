@@ -3,13 +3,13 @@ bits = ''.join([f'{int(c,16):04b}' for c in input()])
 p = 0
 
 ops = {
-  0: lambda x: sum(x),
-  1: lambda x: math.prod(x),
-  2: lambda x: min(x),
-  3: lambda x: max(x),
-  5: lambda x: 1 if x[0] > x[1] else 0,
-  6: lambda x: 1 if x[0] < x[1] else 0,
-  7: lambda x: 1 if x[0] == x[1] else 0
+  0: sum,
+  1: math.prod,
+  2: min,
+  3: max,
+  5: lambda x: int(x[0] > x[1]),
+  6: lambda x: int(x[0] < x[1]),
+  7: lambda x: int(x[0] == x[1])
 }
 
 def read_bits(x):
