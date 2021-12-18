@@ -1,3 +1,4 @@
-rx, ry = [map(int, dem.split('=')[1].split('..')) for dem in input().split(',')[-2:]]
+dimensions = input().split(",")[-2:]
+_, ry = [map(int, dem.split("=")[1].split("..")) for dem in dimensions]
 y = min(ry)
-print(y*(y+1)//2)
+print(y * (y + 1) // 2)
