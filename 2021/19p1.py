@@ -7,19 +7,39 @@ scanners = [
     for scan in sys.stdin.read().split("\n\n")
 ]
 
-axis_map = {
-    0: lambda x, y, z: (x, -z, y),
-    1: lambda x, y, z: (z, y, -x),
-    2: lambda x, y, z: (-y, x, z),
+rotations = {
+    0: lambda x, y, z: (x, y, z),
+    1: lambda x, y, z: (x, -z, y),
+    2: lambda x, y, z: (x, -y, -z),
+    3: lambda x, y, z: (x, z, -y),
+    4: lambda x, y, z: (-x, -y, z),
+    5: lambda x, y, z: (-x, -z, -y),
+    6: lambda x, y, z: (-x, y, -z),
+    7: lambda x, y, z: (-x, z, y),
+    8: lambda x, y, z: (y, -x, z),
+    9: lambda x, y, z: (y, -z, -x),
+    10: lambda x, y, z: (y, x, -z),
+    11: lambda x, y, z: (y, z, x),
+    12: lambda x, y, z: (-y, x, z),
+    13: lambda x, y, z: (-y, -z, x),
+    14: lambda x, y, z: (-y, -x, -z),
+    15: lambda x, y, z: (-y, z, -x),
+    16: lambda x, y, z: (z, y, -x),
+    17: lambda x, y, z: (z, x, y),
+    18: lambda x, y, z: (z, -y, x),
+    19: lambda x, y, z: (z, -x, -y),
+    20: lambda x, y, z: (-z, x, -y),
+    21: lambda x, y, z: (-z, y, x),
+    22: lambda x, y, z: (-z, -x, y),
+    23: lambda x, y, z: (-z, -y, -x),
 }
-axis = [a % 3 for a in range(24)]
 
 
-def find_relative_scanner(rot_scanner):
+def find_relative_scanner(scan):
     for k in scanner_locations.keys():
-        for a in axis:
+        for rot in rotations.values():
             counts = Counter()
-            rot_scanner = set(axis_map[a](*v) for v in rot_scanner)
+            rot_scanner = set(rot(*v) for v in scan)
             for s in rot_scanner:
                 for b in scanners[k]:
                     found = tuple(i - j for i, j in zip(b, s))
@@ -41,9 +61,7 @@ while q:
         scanner_locations[index] = pos[0]
         beacons.update(pos[1])
         scanners[index] = pos[1]
-        print(scanner_locations)
     else:
-        print(index)
         q.append(index)
 
 print(len(beacons))
