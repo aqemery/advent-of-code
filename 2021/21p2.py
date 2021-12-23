@@ -8,7 +8,7 @@ r = range(1, 4)
 uni_rolls = [a + b + c for a in r for b in r for c in r]
 
 
-@dataclass(frozen=True, eq=True, unsafe_hash=True)
+@dataclass(frozen=True)
 class game:
     pos: list
     score: list
