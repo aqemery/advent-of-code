@@ -67,4 +67,9 @@ while q:
 
 print(len(beacons))
 
-print(max(sum([abs(j-i) for i,j in zip(s1,s2)]) for s1, s2 in combinations(scanner_locations.values(), 2)))
+print(
+    max(
+        sum([abs(j - i) for i, j in zip(s1, s2)])
+        for s1, s2 in combinations(scanner_locations.values(), 2)
+    )
+)
