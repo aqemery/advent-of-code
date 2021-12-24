@@ -14,9 +14,6 @@ for step in sys.stdin.read().split("\n"):
                 if on:
                     cubes.add((x, y, z))
                 else:
-                    try:
-                        cubes.remove((x, y, z))
-                    except KeyError:
-                        pass
-
+                    cubes.discard((x, y, z))
+                    
 print(len(cubes))
