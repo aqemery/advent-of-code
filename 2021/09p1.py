@@ -4,6 +4,8 @@ grid = [[int(c) for c in l] for l in sys.stdin.read().split('\n')]
 around = [(1,0),(-1,0),(0,1),(0,-1)]
 
 def grid_check(v,x,y):
+  if x < 0 or y < 0:
+    return True
   try:
     return v < grid[y][x]
   except IndexError:
