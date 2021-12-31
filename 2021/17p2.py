@@ -1,7 +1,6 @@
-dimensions = input().split(",")[-2:]
-rx, ry = [map(int, dem.split("=")[1].split("..")) for dem in dimensions]
-lx, mx = rx
-ly, my = ry
+def get_input():
+    dimensions = input().split(",")[-2:]
+    return [map(int, dem.split("=")[1].split("..")) for dem in dimensions]
 
 
 def step(vx, vy):
@@ -18,13 +17,21 @@ def step(vx, vy):
         yield x, y
 
 
-found = set()
-for vx in range(1, mx + 1):
-    for vy in range(ly, -ly + 1):
-        for x, y in step(vx, vy):
-            if y < ly:
-                break
-            if ly <= y <= my and mx >= x >= lx:
-                found.add((vx, vy))
+def main():
+    rx, ry = get_input()
+    lx, mx = rx
+    ly, my = ry
 
-print(len(found))
+    found = set()
+    for vx in range(1, mx + 1):
+        for vy in range(ly, -ly + 1):
+            for x, y in step(vx, vy):
+                if y < ly:
+                    break
+                if ly <= y <= my and mx >= x >= lx:
+                    found.add((vx, vy))
+    print(len(found))
+
+
+if __name__ == "__main__":
+    main()

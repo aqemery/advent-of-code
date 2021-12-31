@@ -17,9 +17,14 @@ start day:
     # curl -b "$(cat {{justfile_directory()}}/cookie.txt)" "${url}/input" > input
     # echo $url
     # just sample "${url}" > sample
-    touch main.py
+    touch {{day}}p1.py
     code -n -w input
     code -r {{day}}p1.py
+
+run day:
+    #!/usr/bin/env bash
+    cd {{year}}
+    python3.10 {{day}}.py < input
 
 open day:
     #!/usr/bin/env bash

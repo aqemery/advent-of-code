@@ -18,6 +18,7 @@ class Sub:
     def move_aim(self, x):
         self.aim += x
 
+
 def part1(lines):
     sub = Sub()
     for l in lines:
@@ -58,10 +59,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# for l in sys.stdin.readlines():
-#     k, v = l.split()
-#     fncs[k](int(v))
-
-# print(depth * horizontal)
