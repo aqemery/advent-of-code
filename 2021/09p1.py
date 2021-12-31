@@ -1,15 +1,18 @@
 import sys
 
-grid = [[int(c) for c in l] for l in sys.stdin.read().split('\n')]
+lines = sys.stdin.read().split('\n')
+grid = {(x,y):int(v) for y, row in enumerate(lines) for x, v in enumerate(row)}
 around = [(1,0),(-1,0),(0,1),(0,-1)]
 
-def grid_check(v,x,y):
-  if x < 0 or y < 0:
-    return True
+def grid_check(v, pos):
   try:
-    return v < grid[y][x]
-  except IndexError:
+    return v < grid[pos]
+  except KeyError:
     return True
 
-low_points = [v for y, row in enumerate(grid) for x, v in enumerate(row) if all([grid_check(v,x+i,y+j) for i,j in around])]
-print(sum([1 + lp for lp in low_points]))
+out = 0
+for k, v in grid.items():
+  checks = [tuple(sum(z) for z in zip(k, a)) for a in around]
+  if all([grid_check(v, c) for c in checks]):
+    out += 1 + v
+print(out)
