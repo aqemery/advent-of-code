@@ -10,11 +10,7 @@ def part2(depths):
     return part1(threesum)
 
 
-def main():
+if __name__ == "__main__":
     depths = list(map(int, sys.stdin.readlines()))
     print("part 1:", part1(depths))
     print("part 2:", part2(depths))
-
-
-if __name__ == "__main__":
-    main()
