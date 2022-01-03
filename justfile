@@ -8,18 +8,9 @@ _:
 start day:
     #!/usr/bin/env bash
     cd {{year}}
-    # mkdir -p {{day}}
-    # cd {{day}}
-    # touch main.py
-    # day=$((10#{{day}}))
-    # # echo "session=53616c74..." > cookie.txt
-    # url="https://adventofcode.com/{{year}}/day/${day}"
-    # curl -b "$(cat {{justfile_directory()}}/cookie.txt)" "${url}/input" > input
-    # echo $url
-    # just sample "${url}" > sample
-    touch {{day}}p1.py
+    touch {{day}}.py
     code -n -w input
-    code -r {{day}}p1.py
+    code -r {{day}}.py
 
 run day:
     #!/usr/bin/env bash
@@ -29,18 +20,8 @@ run day:
 open day:
     #!/usr/bin/env bash
     cd {{year}}
-    # mkdir -p {{day}}
-    # cd {{day}}
-    # touch main.py
-    # day=$((10#{{day}}))
-    # # echo "session=53616c74..." > cookie.txt
-    # url="https://adventofcode.com/{{year}}/day/${day}"
-    # curl -b "$(cat {{justfile_directory()}}/cookie.txt)" "${url}/input" > input
-    # echo $url
-    # just sample "${url}" > sample
     code -n -w input
-    code -r {{day}}p1.py
-    code -r {{day}}p2.py
+    code -r {{day}}.py
 
 edit:
     #!/usr/bin/env bash
