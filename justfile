@@ -1,4 +1,4 @@
-year := "2021"
+year := "2015"
 
 _:
     @just -l -u --list-heading $'Welcome to {{year}} AoC 🎄\n'
@@ -15,7 +15,7 @@ start day:
 run day:
     #!/usr/bin/env bash
     cd {{year}}
-    python3.10 {{day}}.py < input
+    python3 {{day}}.py < input
 
 open day:
     #!/usr/bin/env bash
