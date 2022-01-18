@@ -1,14 +1,15 @@
 from collections import Counter
 
+
 def part1(floors):
     counts = Counter(floors)
-    return counts['('] - counts[')']
+    return counts["("] - counts[")"]
 
 
 def part2(floors):
     level = 0
     for i, v in enumerate(floors):
-        if v == '(':
+        if v == "(":
             level += 1
         else:
             level -= 1
