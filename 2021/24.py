@@ -1,5 +1,6 @@
 import sys
 
+
 def solve(ops, code):
     stack = []
     for i in range(14):

@@ -1,6 +1,7 @@
 import sys
 from dataclasses import dataclass
 
+
 @dataclass(frozen=True)
 class Cuboid:
     xs: int
@@ -42,6 +43,7 @@ class Cuboid:
             yield Cuboid(sub.xs, sub.xe, sub.ye, self.ye, self.zs, self.ze)
             yield Cuboid(sub.xs, sub.xe, sub.ys, sub.ye, self.zs, sub.zs)
             yield Cuboid(sub.xs, sub.xe, sub.ys, sub.ye, sub.ze, self.ze)
+
 
 cubes = []
 for step in sys.stdin.read().split("\n"):

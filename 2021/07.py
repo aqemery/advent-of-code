@@ -5,7 +5,7 @@ from statistics import median
 def part1(crabs):
     med = int(median(crabs))
     return sum([abs(med - c) for c in crabs])
-    
+
 
 def part2(crabs):
     average = math.floor(sum(crabs) / len(crabs))

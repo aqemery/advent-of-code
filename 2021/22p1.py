@@ -15,5 +15,5 @@ for step in sys.stdin.read().split("\n"):
                     cubes.add((x, y, z))
                 else:
                     cubes.discard((x, y, z))
-                    
+
 print(len(cubes))

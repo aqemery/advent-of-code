@@ -8,7 +8,7 @@ _:
 start day:
     #!/usr/bin/env bash
     cd {{year}}
-    touch {{day}}.py
+    cp {{invocation_directory()}}/template.py {{day}}.py
     code -n -w input
     code -r {{day}}.py
 
