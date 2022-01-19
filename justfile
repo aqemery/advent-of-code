@@ -15,7 +15,7 @@ start day:
 run day:
     #!/usr/bin/env bash
     cd {{year}}
-    python3 {{day}}.py < input
+    python {{day}}.py < input
 
 open day:
     #!/usr/bin/env bash
