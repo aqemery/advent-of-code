@@ -30,6 +30,6 @@ if __name__ == "__main__":
     [add_line(l) for l in data]
     p1 = wires['a']()
     print("part 1:", p1)
-    wires['b'] = lambda: val(str(p1))
+    wires['b'] = lambda: p1
     val.cache_clear()
     print("part 2:", wires['a']())
