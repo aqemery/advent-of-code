@@ -14,7 +14,7 @@ class Sub:
     def move_horizontal(self, x):
         self.horizontal += x
         self.depth += x * self.aim
-    
+
     def move_aim(self, x):
         self.aim += x
 
@@ -25,11 +25,11 @@ def part1(lines):
         k, v = l.split()
         v = int(v)
         match k:
-            case 'forward':
+            case "forward":
                 sub.move_horizontal(v)
-            case 'up':
+            case "up":
                 sub.move_depth(-v)
-            case 'down':
+            case "down":
                 sub.move_depth(v)
 
     return sub.depth * sub.horizontal
@@ -41,14 +41,15 @@ def part2(lines):
         k, v = l.split()
         v = int(v)
         match k:
-            case 'forward':
+            case "forward":
                 sub.move_horizontal(v)
-            case 'up':
+            case "up":
                 sub.move_aim(-v)
-            case 'down':
+            case "down":
                 sub.move_aim(v)
 
     return sub.depth * sub.horizontal
+
 
 if __name__ == "__main__":
     lines = sys.stdin.readlines()

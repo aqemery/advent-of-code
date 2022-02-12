@@ -12,7 +12,9 @@ for l in d:
     weights[(start, end)] = int(dist)
     weights[(end, start)] = int(dist)
 
-paths = [sum([weights[(n1,n2)] for n1, n2 in zip(p,p[1:])]) for p in  permutations(nodes)]
+paths = [
+    sum([weights[(n1, n2)] for n1, n2 in zip(p, p[1:])]) for p in permutations(nodes)
+]
 
 print("part 1:", min(paths))
 print("part 2:", max(paths))
