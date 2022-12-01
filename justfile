@@ -1,4 +1,4 @@
-year := "2015"
+year := "2022"
 
 _:
     @just -l -u --list-heading $'Welcome to {{year}} AoC 🎄\n'
