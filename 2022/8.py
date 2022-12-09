@@ -8,7 +8,6 @@ dirs = [(1,0),(0,1),(-1,0),(0,-1)]
 class Tree:
     height: int
     visible: bool = False
-    score: int = 0
 
 
 def lineOfSight(forest, pos_x, pos_y, dir_x, dir_y):
