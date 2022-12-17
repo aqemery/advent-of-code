@@ -37,7 +37,7 @@ def part1(tunnels, flows):
             q.append((c, tl, vl, total + score))
         else:
             pressures.append(total)
-    
+
     return max(pressures)
 
 
@@ -53,18 +53,12 @@ def part2(tunnels, flows):
                 score, c, tl, vl = no
                 new_pos = list(pos)
                 new_pos[i] = (c, tl)
-                q.append((tuple(new_pos), vl, total + score))
+                max_p = max([flows[v] for v in vl]) * (tl - 1)
+                if max_p + total + score > pressure:
+                    q.append((tuple(new_pos), vl, total + score))
             else:
                 if pressure < total:
                     pressure = total
-                    print(pressure)
-
-        nq = deque()
-        while q:
-            p, vl, t = q.popleft()
-            if t > pressure - 200:
-                nq.append((p, vl, t))
-        q = nq
     return pressure
 
 
@@ -72,8 +66,7 @@ if __name__ == "__main__":
     data = sys.stdin.read()
     data = data.replace("tunnel leads to valve", "tunnels lead to valves")
     data = data.split("\n")
-    check = r'Valve (.*) has flow rate=(.*); tunnels lead to valves (.*)'
-
+    check = r"Valve (.*) has flow rate=(.*); tunnels lead to valves (.*)"
     tunnels = {}
     flows = {}
     for d in data:
