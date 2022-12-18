@@ -77,4 +77,4 @@ if __name__ == "__main__":
         tunnels[t] = to.split(", ")
 
     print("part 1:", part1(tunnels, flows))
-    print("part 2:", part2(tunnels, flows))
+    # print("part 2:", part2(tunnels, flows))
