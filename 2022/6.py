@@ -1,8 +1,9 @@
 import sys
 
+
 def solve(data, times):
-    for i in range(times, len(d)+1):
-        if len(set(d[i-times:i])) == times:
+    for i in range(times, len(d) + 1):
+        if len(set(d[i - times : i])) == times:
             return i
 
 

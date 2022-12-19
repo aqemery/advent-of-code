@@ -1,9 +1,10 @@
 import sys
 
+
 def part1(data):
     total = 0
-    groups = (d.split(',') for d in data)
-    groups = [[[int(i) for i in e.split('-')] for e in g] for g in groups]
+    groups = (d.split(",") for d in data)
+    groups = [[[int(i) for i in e.split("-")] for e in g] for g in groups]
     for a, b in groups:
         if a[0] <= b[0] and a[1] >= b[1]:
             total += 1
@@ -15,8 +16,8 @@ def part1(data):
 
 def part2(data):
     total = 0
-    groups = (d.split(',') for d in data)
-    groups = [[[int(i) for i in e.split('-')] for e in g] for g in groups]
+    groups = (d.split(",") for d in data)
+    groups = [[[int(i) for i in e.split("-")] for e in g] for g in groups]
     for a, b in groups:
         if b[0] <= a[0] <= b[1] or a[0] <= b[0] <= a[1]:
             total += 1

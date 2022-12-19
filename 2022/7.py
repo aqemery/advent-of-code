@@ -5,19 +5,19 @@ data = sys.stdin.read().split("\n")
 pointer = deque()
 totals = []
 cur = 0
-for d in data:        
+for d in data:
     match d.split():
-        case ['$', 'cd', '..']:
+        case ["$", "cd", ".."]:
             totals.append(cur)
             cur = pointer.pop() + cur
-        case ['$', 'cd', '/']:
+        case ["$", "cd", "/"]:
             pointer = deque()
-        case ['$', 'cd', dir]:
+        case ["$", "cd", dir]:
             pointer.append(cur)
             cur = 0
-        case ['$', 'ls']:
+        case ["$", "ls"]:
             pass
-        case ['dir', _]:
+        case ["dir", _]:
             pass
         case [size, f]:
             cur += int(size)

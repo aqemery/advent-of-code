@@ -9,7 +9,7 @@ def axisRange(s, e):
 def solve(data, void=True):
     blocked = set()
     for d in data:
-        path = [[int(v) for v in n.split(',')] for n in d.split(" -> ")]
+        path = [[int(v) for v in n.split(",")] for n in d.split(" -> ")]
         for i, p in enumerate(path[1:]):
             sx, sy = path[i]
             px, py = p
@@ -18,8 +18,8 @@ def solve(data, void=True):
             elif sy == py:
                 blocked.update((x, sy) for x in axisRange(sx, px))
 
-    void_lim = max(y for _,y in blocked)
-    floor = max(y for _,y in blocked) + 1
+    void_lim = max(y for _, y in blocked)
+    floor = max(y for _, y in blocked) + 1
     total = 0
     while True:
         sx = 500
@@ -31,7 +31,7 @@ def solve(data, void=True):
                 sy += 1
                 if void and sy > void_lim:
                     return total
-            elif not (sx -1, sy + 1) in blocked and sy < floor:
+            elif not (sx - 1, sy + 1) in blocked and sy < floor:
                 sy += 1
                 sx -= 1
             elif not (sx + 1, sy + 1) in blocked and sy < floor:

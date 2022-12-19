@@ -1,24 +1,25 @@
 import sys
 
 dlw = [3, 0, 6]
-f = ord('A')
-s = ord('X')
+f = ord("A")
+s = ord("X")
+
 
 def part1(data):
-    score = 0 
-    for a,b in data:
-        fv = a-f
-        sv = b-s
-        score += dlw[fv-sv] + sv + 1
+    score = 0
+    for a, b in data:
+        fv = a - f
+        sv = b - s
+        score += dlw[fv - sv] + sv + 1
     return score
 
 
 def part2(data):
-    score = 0 
-    for a,b in data:
-        fv = a-f
-        sv = b-s
-        score += sv * 3 + (fv+sv-1) % 3 + 1 
+    score = 0
+    for a, b in data:
+        fv = a - f
+        sv = b - s
+        score += sv * 3 + (fv + sv - 1) % 3 + 1
 
     return score
 

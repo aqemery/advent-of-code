@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Monkey():
+class Monkey:
     items: list = None
     operation: str = None
     test: int = None
@@ -23,13 +23,14 @@ class Monkey():
         self.items = []
         return out
 
+
 def parseMonkey(data):
-    items = [v.split(': ')[-1] for v in data.split('\n')[1:]]
-    l = [int(i) for i in items[0].split(', ')]
-    o = items[1].split('= ')[-1]
-    t, p1, p2  = [int(i.split()[-1]) for i in items[2:]]
+    items = [v.split(": ")[-1] for v in data.split("\n")[1:]]
+    l = [int(i) for i in items[0].split(", ")]
+    o = items[1].split("= ")[-1]
+    t, p1, p2 = [int(i.split()[-1]) for i in items[2:]]
     return Monkey(items=l, operation=o, test=t, p=[p1, p2])
-        
+
 
 def solve(data, times, divide=3):
     monkeys = [parseMonkey(d) for d in data]

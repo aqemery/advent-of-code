@@ -2,7 +2,8 @@ import sys
 from dataclasses import dataclass
 from math import prod
 
-dirs = [(1,0),(0,1),(-1,0),(0,-1)]
+dirs = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
 
 @dataclass
 class Tree:
@@ -16,7 +17,7 @@ def lineOfSight(forest, pos_x, pos_y, dir_x, dir_y):
         while t := forest[(pos_x, pos_y)]:
             if t.height > cur:
                 t.visible = True
-                cur = t.height            
+                cur = t.height
             pos_x += dir_x
             pos_y += dir_y
     except KeyError:
@@ -27,12 +28,12 @@ def seeTrees(tree, cx, cy):
     height = tree.height
     scores = []
     for dir_x, dir_y in dirs:
-        score = 0 
+        score = 0
         pos_x = cx + dir_x
         pos_y = cy + dir_y
         try:
-            while t := forest[(pos_x, pos_y)]:   
-                score += 1  
+            while t := forest[(pos_x, pos_y)]:
+                score += 1
                 if t.height >= tree.height:
                     break
                 pos_x += dir_x
@@ -48,16 +49,15 @@ if __name__ == "__main__":
     d = sys.stdin.read().split("\n")
     for y, l in enumerate(d):
         for x, v in enumerate(l):
-            forest[(x,y)] = Tree(height=int(v))
+            forest[(x, y)] = Tree(height=int(v))
 
     l = len(d)
 
     for i in range(l):
         lineOfSight(forest, 0, i, 1, 0)
         lineOfSight(forest, i, 0, 0, 1)
-        lineOfSight(forest, l-1, i, -1, 0)
-        lineOfSight(forest, i, l-1, 0, -1)
-
+        lineOfSight(forest, l - 1, i, -1, 0)
+        lineOfSight(forest, i, l - 1, 0, -1)
 
     p1 = sum(t.visible for t in forest.values())
     p2 = max(seeTrees(v, *k) for k, v in forest.items())

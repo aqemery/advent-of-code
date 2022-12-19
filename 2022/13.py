@@ -2,11 +2,14 @@ import sys
 from math import prod
 from functools import cmp_to_key
 
+
 def compare(a, b):
     match (a, b):
         case (int(), int()):
-            if a < b: return 1
-            elif a > b: return -1
+            if a < b:
+                return 1
+            elif a > b:
+                return -1
             return 0
         case (int(), list()):
             return compare([a], b)
@@ -23,7 +26,7 @@ def compare(a, b):
             if len(b) > len(a):
                 return 1
             return 0
-            
+
 
 def part1(data):
     ordered = []
@@ -31,7 +34,7 @@ def part1(data):
         d = [eval(p) for p in d.split("\n")]
         c = compare(*d)
         if c > 0:
-            ordered.append(i+1)
+            ordered.append(i + 1)
     return sum(ordered)
 
 

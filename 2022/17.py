@@ -79,10 +79,6 @@ def shiftRock(rock, j):
     return nr
 
 
-def part2(data):
-    return
-
-
 def rockGen():
     q = deque([line_rock, plus_rock, l_rock, line_down_rock, square_rock])
     while q:

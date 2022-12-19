@@ -3,10 +3,11 @@ import math
 from dataclasses import dataclass
 
 
-dirs = {"R":(1,0),"U":(0,1),"L":(-1,0),"D":(0,-1)}
+dirs = {"R": (1, 0), "U": (0, 1), "L": (-1, 0), "D": (0, -1)}
+
 
 @dataclass
-class Knot():
+class Knot:
     x: int = 0
     y: int = 0
 
@@ -25,7 +26,7 @@ class Knot():
         dist = abs(self.x - hx) + abs(self.y - hy)
 
         if dist > 1:
-            angle = math.atan2(self.x - hx,self.y - hy)
+            angle = math.atan2(self.x - hx, self.y - hy)
             move_by_cos = -math.cos(angle) * mult
             move_by_sin = -math.sin(angle) * mult
             self.move(int(move_by_sin), int(move_by_cos))
@@ -33,9 +34,10 @@ class Knot():
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
-    
+
     def pos(self):
         return (self.x, self.y)
+
 
 def solve(data, times):
     locations = set()
@@ -55,5 +57,3 @@ if __name__ == "__main__":
     d = sys.stdin.read().split("\n")
     print("part 1:", solve(d, 2))
     print("part 2:", solve(d, 10))
-
-
