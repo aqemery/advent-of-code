@@ -1,20 +1,16 @@
-year := "2022"
+year := "2015"
 
 _:
     @just -l -u --list-heading $'Welcome to {{year}} AoC 🎄\n'
 
-# Python
-
-start day:
-    #!/usr/bin/env bash
-    cd {{year}}
-    cp {{invocation_directory()}}/template.py {{day}}.py
-    code -n -w input
-    code -r {{day}}.py
-
 run day:
     #!/usr/bin/env bash
     cd {{year}}
+    if ! test -f ./{{day}}.py; then
+        cp {{invocation_directory()}}/template.py {{day}}.py
+        code -n -w input
+        code -r {{day}}.py
+    fi
     python {{day}}.py < input
 
 open day:

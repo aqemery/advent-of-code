@@ -1,13 +1,4 @@
 import sys
-from collections import defaultdict, Counter, deque
-from itertools import combinations, permutations
-from math import prod
-from dataclasses import dataclass
-from functools import cache
-from statistics import median
-import re
-import heapq
-
 
 def solve(data, inital_a=0):
     registers = {"a": inital_a, "b": 0}
