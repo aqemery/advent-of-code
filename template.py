@@ -1,6 +1,6 @@
 import sys
 from collections import defaultdict, Counter, deque
-from itertools import combinations, permutations, batched
+from itertools import combinations, permutations, batched, chain
 from math import prod
 from dataclasses import dataclass
 from functools import cache
