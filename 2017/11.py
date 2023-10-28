@@ -1,21 +1,22 @@
 directions = {
     "n": (0, 1),
-    "ne": (-.5, .5),
-    "nw": (.5, .5),
+    "ne": (-0.5, 0.5),
+    "nw": (0.5, 0.5),
     "s": (0, -1),
-    "se": (-.5, -.5),
-    "sw": (.5, -.5),
+    "se": (-0.5, -0.5),
+    "sw": (0.5, -0.5),
 }
 
 
 def get_steps(x, y):
     x = abs(x)
     y = abs(y)
-   
-    x_steps = x // .5
+
+    x_steps = x // 0.5
     y_steps = abs(abs(y) - x)
 
     return int(x_steps + y_steps)
+
 
 if __name__ == "__main__":
     d = input()
@@ -28,7 +29,6 @@ if __name__ == "__main__":
         steps = get_steps(x, y)
         if steps > max_steps:
             max_steps = steps
-
 
     print("part 1:", steps)
     print("part 2:", max_steps)
