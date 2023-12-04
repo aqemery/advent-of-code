@@ -7,10 +7,7 @@ def part1(data):
     for line in data:
         a, b = [set(map(int, l.split())) for l in line.split(": ")[-1].split("|")]
         if winners := len(a & b):
-            card_total = 1
-            for _ in range(winners - 1):
-                card_total *= 2
-            total += card_total
+            total += 2 ** (winners - 1)
     return total
 
 
