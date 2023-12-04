@@ -10,9 +10,6 @@ def around(x, y):
             yield x + dx, y + dy
 
 
-
-
-
 def get_parts(data):
     for y, line in enumerate(data):
         for match in re.finditer(regex, line):
