@@ -53,5 +53,4 @@ if __name__ == "__main__":
     d = sys.stdin.read().split("\n\n")
     print("part 1:", part1(d))
     print("part 2:", part2(d))
-    # print("part 1:", solve(d, 1))
-    # print("part 2:", solve(d, 2))
+    
