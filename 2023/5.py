@@ -1,5 +1,5 @@
 import sys
-from itertools import batched
+from itertools import batched, count
 
 
 def get_input(data):
@@ -33,10 +33,9 @@ def part1(data):
 
 def part2(data):
     seeds, transforms = get_input(data)
-    lowest = 0
     transforms = transforms[::-1]
 
-    while True:
+    for lowest in count():
         seed = lowest
         for group in transforms:
             for dest, source, length in group:
@@ -46,7 +45,6 @@ def part2(data):
 
         if any(s <= seed < (s + r) for s, r in batched(seeds, 2)):
             return lowest
-        lowest += 1
 
 
 if __name__ == "__main__":
