@@ -19,7 +19,6 @@ def part2():
     return lcm(*[part1(start=s, end=lambda x: x[-1] == "Z") for s in current])
 
 
-
 if __name__ == "__main__":
     dirs, lines = sys.stdin.read().split("\n\n")
     dirs = [d == "R" for d in dirs]
