@@ -24,7 +24,7 @@ def part1(data):
 
 
 def part2(data):
-    dir_nums = ["R", "D", "L", "U"]
+    dir_nums = "RDLU"
     new_data = []
     for line in data:
         _, _, hex_val = line.split()
