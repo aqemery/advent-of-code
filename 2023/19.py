@@ -24,8 +24,30 @@ def part1(rules, values):
                 break
             elif current == "R":
                 break
-
     return total
+
+
+def next_range(ranges, rule, split_char):
+    rule_check, next_name = rule.split(":")
+    var, val = rule_check.split(split_char)
+    index = "xmas".index(var)
+    n_min = min(ranges[index][1], int(val))
+    n_max = max(ranges[index][0], int(val))
+    new_ranges = []
+    leftover_ranges = []
+    for i, (low, high) in enumerate(ranges):
+        if i == index:
+            if split_char == "<":
+                new_ranges.append((low, n_min - 1))
+                leftover_ranges.append((n_min, high))
+            else:
+                new_ranges.append((n_max + 1, high))
+                leftover_ranges.append((low, n_max))
+        else:
+            new_ranges.append((low, high))
+            leftover_ranges.append((low, high))
+    ranges = tuple(leftover_ranges)
+    return ranges, (next_name, tuple(new_ranges))
 
 
 def part2(rules):
@@ -39,38 +61,11 @@ def part2(rules):
         if name == "R":
             continue
         for r in rules[name]:
-            if "<" in r:
-                rule_check, next_name = r.split(":")
-                var, val = rule_check.split("<")
-                index = "xmas".index(var)
-                n_min = min(ranges[index][1], int(val))
-                new_ranges = []
-                leftover_ranges = []
-                for i, (low, high) in enumerate(ranges):
-                    if i == index:
-                        new_ranges.append((low, n_min - 1))
-                        leftover_ranges.append((n_min, high))
-                    else:
-                        new_ranges.append((low, high))
-                        leftover_ranges.append((low, high))
-                ranges = tuple(leftover_ranges)
-                q.append((next_name, tuple(new_ranges)))
-            elif ">" in r:
-                rule_check, next_name = r.split(":")
-                var, val = rule_check.split(">")
-                index = "xmas".index(var)
-                n_max = max(ranges[index][0], int(val))
-                new_ranges = []
-                leftover_ranges = []
-                for i, (low, high) in enumerate(ranges):
-                    if i == index:
-                        new_ranges.append((n_max + 1, high))
-                        leftover_ranges.append((low, n_max))
-                    else:
-                        new_ranges.append((low, high))
-                        leftover_ranges.append((low, high))
-                ranges = tuple(leftover_ranges)
-                q.append((next_name, tuple(new_ranges)))
+            for c in "<>":
+                if c in r:
+                    ranges, new_range = next_range(ranges, r, c)
+                    q.append(new_range)
+                    break
             else:
                 q.append((r, ranges))
     return total
