@@ -11,6 +11,7 @@ def solve(data):
     conjs = []
     low_pulse = 0
     high_pulse = 0
+    
     for line in data:
         source, dest = line.replace(" ", "").split("->")
         dest = dest.split(",")
@@ -46,8 +47,6 @@ def solve(data):
                     return found_values
             if source == "output":
                 continue
-            if source == "rx" and not pulse:
-                return times
             if source in flips:
                 if not pulse:
                     flips[source] = not flips[source]
