@@ -60,7 +60,9 @@ def part2(rules):
             continue
         if name == "R":
             continue
-        for r, c in [(r, c) for r in rules[name][:-1] for c in "<>" if c in r if c in r]:
+        for r, c in [
+            (r, c) for r in rules[name][:-1] for c in "<>" if c in r if c in r
+        ]:
             ranges, new_range = next_range(ranges, r, c)
             q.append(new_range)
         q.append((rules[name][-1], ranges))
