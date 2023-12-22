@@ -1,16 +1,7 @@
 import sys
-from collections import defaultdict, Counter, deque
-from itertools import combinations, permutations, batched, chain
-from math import prod
-from dataclasses import dataclass
-from functools import cache
-from statistics import median
-import re
-import heapq
 
 
 def get_block(line):
-    # return a set of all the points in the block
     start, end = line.split("~")
     sx, sy, sz = [int(n) for n in start.split(",")]
     ex, ey, ez = [int(n) + 1 for n in end.split(",")]
@@ -20,11 +11,9 @@ def get_block(line):
 
 
 def move_blocks(blocks):
-    # attempt to move each block down one
-    # return True if any block was moved
-    # return the new blocks
     m_blocks = blocks.copy()
     moved = False
+    did_move = []
     for i, block in enumerate(m_blocks):
         test = set((x, y, z - 1) for x, y, z in block)
         if any(z < 0 for _, _, z in test):
@@ -37,34 +26,45 @@ def move_blocks(blocks):
         else:
             m_blocks[i] = test
             moved = True
-    return moved, m_blocks
+            did_move.append(i)
+    return moved, m_blocks, did_move
 
 
-def part1(data):
-    # get all the blocks as sets of points
-    blocks = [get_block(line) for line in data]
-
-    # move the blocks down until they can't move any more
+def drop_all(blocks):
+    all_moved = set()
     moved = True
     while moved:
-        moved, blocks = move_blocks(blocks)
+        moved, blocks, did_move = move_blocks(blocks)
+        all_moved.update(did_move)
+    return blocks, len(all_moved)
 
-    # count the number of block removals that don't cause any other blocks to fall
+
+def part1(blocks):
     count = 0
     for block in blocks:
-        # remove the current block and try to move the rest
         test_blocks = [b for b in blocks if b != block]
-        moved, _ = move_blocks(test_blocks)
+        moved, _, _ = move_blocks(test_blocks)
         if not moved:
             count += 1
     return count
 
 
-def part2(data):
-    return
+def part2(blocks):
+    count = 0
+    for block in blocks:
+        test_blocks = [b for b in blocks if b != block]
+        all_moved = set()
+        moved = True
+        while moved:
+            moved, test_blocks, did_move = move_blocks(test_blocks)
+            all_moved.update(did_move)
+        count += len(all_moved)
+    return count
 
 
 if __name__ == "__main__":
     d = sys.stdin.read().split("\n")
-    print("part 1:", part1(d))
-    print("part 2:", part2(d))
+    blocks = [get_block(line) for line in d]
+    blocks, _ = drop_all(blocks)
+    print("part 1:", part1(blocks))
+    print("part 2:", part2(blocks))
