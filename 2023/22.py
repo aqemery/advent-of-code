@@ -32,7 +32,7 @@ def move_blocks(blocks):
         for j, other in enumerate(m_blocks):
             if i == j:
                 continue
-            if block & other:
+            if test & other:
                 break
         else:
             m_blocks[i] = test
@@ -45,8 +45,8 @@ def part1(data):
     blocks = [get_block(line) for line in data]
 
     # move the blocks down until they can't move any more
-    moved = False
-    while not moved:
+    moved = True
+    while moved:
         moved, blocks = move_blocks(blocks)
 
     # count the number of block removals that don't cause any other blocks to fall
