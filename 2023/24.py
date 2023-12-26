@@ -1,5 +1,6 @@
 import sys
-from itertools import combinations
+from itertools import combinations, count
+from collections import defaultdict
 
 
 def line(p1, p2):
@@ -55,6 +56,43 @@ def part1(data):
 
 
 def part2(data):
+    positions = defaultdict(list)
+    print(len(data))
+    exit()
+    for times in count():
+        for i, (x, y, z, vx, vy, vz) in enumerate(data):
+            positions[times].append((x, y, z, i))
+            print(x, y, z)
+    
+        data = [(x+vx, y+vy, z+vz, vx, vy, vz) for x, y, z, vx, vy, vz in data]
+        if times < 1000:
+            continue 
+        break
+
+    print(positions)
+        # if not some:
+        #     break
+
+        
+
+        
+            # print(x, y, z, vx, vy, vz)
+
+        # x_step = data[0][0] + data[1][0]
+        # # print(x_step)
+
+        # for i in range(1, len(data)):
+        #     if data[i][0] + data[i-1][0] != x_step:
+        #         break
+        # else:
+        #     print("maybe", data)
+        # # break
+    
+    
+
+
+
+
     return
 
 
