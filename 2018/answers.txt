@@ -1,0 +1,28 @@
+Advent of Code 2018 - All Answers
+==================================
+
+Day 1:  Part 1 = 522                        Part 2 = 73364
+Day 2:  Part 1 = 5976                       Part 2 = xretqmmonskvzupalfiwhcfdb
+Day 3:  Part 1 = 114946                     Part 2 = 877
+Day 4:  Part 1 = 98680                      Part 2 = 9763
+Day 5:  Part 1 = 9370                       Part 2 = 6390
+Day 6:  Part 1 = 3358                       Part 2 = 45909
+Day 7:  Part 1 = ABDCJLFMNVQWHIRKTEUXOZSYPG Part 2 = 896
+Day 8:  Part 1 = 40701                      Part 2 = 21399
+Day 9:  Part 1 = 412117                     Part 2 = 3444129546
+Day 10: Part 1 = PLBPGFRR                   Part 2 = 10519
+Day 11: Part 1 = 21,77                      Part 2 = 224,222,27
+Day 12: Part 1 = 4818                       Part 2 = 5100000001377
+Day 13: Part 1 = 8,9                        Part 2 = 73,33
+Day 14: Part 1 = 1221283494                 Part 2 = 20261485
+Day 15: Part 1 = 227290                     Part 2 = 53725
+Day 16: Part 1 = 493                        Part 2 = 445
+Day 17: Part 1 = 31949                      Part 2 = 26384
+Day 18: Part 1 = 606416                     Part 2 = 210796
+Day 19: Part 1 = 1092                       Part 2 = 13406472
+Day 20: Part 1 = 3512                       Part 2 = 8660
+Day 21: Part 1 = 3173684                    Part 2 = 12464363
+Day 22: Part 1 = 7380                       Part 2 = 1013
+Day 23: Part 1 = 599                        Part 2 = 94481130
+Day 24: Part 1 = 25088                      Part 2 = 2002
+Day 25: Part 1 = 388                        Part 2 = (free star)

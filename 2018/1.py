@@ -1,24 +1,27 @@
-import sys
+#!/usr/bin/env python3
+"""Advent of Code 2018 - Day 1: Chronal Calibration"""
 
-data = sys.stdin.read().split("\n")
-values = [int(n) for n in data]
-out = sum(values)
-print("part1:", out)
+def solve():
+    with open('/Users/adamemery/advent-of-code/2018/input1', 'r') as f:
+        changes = [int(line.strip()) for line in f if line.strip()]
 
-totals = []
+    # Part 1: Sum of all frequency changes
+    part1 = sum(changes)
 
-current = 0
-for v in values:
-    current += v
-    totals.append(current)
+    # Part 2: First frequency reached twice
+    seen = {0}
+    freq = 0
+    part2 = None
+    while part2 is None:
+        for change in changes:
+            freq += change
+            if freq in seen:
+                part2 = freq
+                break
+            seen.add(freq)
 
+    print(f"Part 1: {part1}")
+    print(f"Part 2: {part2}")
 
-seen = set()
-current = 0
-while True:
-    for v in values:
-        current += v
-        if current in seen:
-            print("part2:", current)
-            exit()
-        seen.add(current)
+if __name__ == "__main__":
+    solve()
