@@ -1,63 +1,105 @@
-import sys
-from collections import defaultdict, Counter, deque
-from itertools import combinations, permutations, batched, chain
-from math import prod
-from dataclasses import dataclass
-from functools import cache
-from statistics import median
-import re
-import heapq
+from collections import defaultdict, deque
 
+def parse(filename):
+    with open(filename) as f:
+        return [line.strip().split() for line in f]
 
-def solve(data, times):
-    return
+def get_val(regs, x):
+    try:
+        return int(x)
+    except:
+        return regs[x]
 
+def part1(instructions):
+    regs = defaultdict(int)
+    last_sound = 0
+    ip = 0
 
-def part1(data):
-    registers = defaultdict(int)
-    last_played = None
-    index = 0
+    while 0 <= ip < len(instructions):
+        cmd = instructions[ip]
+        op = cmd[0]
 
-    def get(y):
-        if y.isalpha():
-            return registers[y]
-        return int(y)
-    
-    while index < len(data):
-        l = data[index]
-        match l.split():
-            case ["snd", x]:
-                last_played = registers[x]
-            case ["set", x, y]:
-                registers[x] = get(y)
-            case ["add", x, y]:
-                registers[x] += get(y)
-            case ["mul", x, y]:
-                registers[x] *= get(y)
-            case ["mod", x, y]:
-                registers[x] %= get(y)
-            case ["rcv", x]:
-                if registers[x] != 0:
-                    return last_played
-                registers[x] = last_played
-            case ["jgz", x, y]:
-                if registers[x] > 0:
-                    index += get(y)
+        if op == 'snd':
+            last_sound = get_val(regs, cmd[1])
+        elif op == 'set':
+            regs[cmd[1]] = get_val(regs, cmd[2])
+        elif op == 'add':
+            regs[cmd[1]] += get_val(regs, cmd[2])
+        elif op == 'mul':
+            regs[cmd[1]] *= get_val(regs, cmd[2])
+        elif op == 'mod':
+            regs[cmd[1]] %= get_val(regs, cmd[2])
+        elif op == 'rcv':
+            if get_val(regs, cmd[1]) != 0:
+                return last_sound
+        elif op == 'jgz':
+            if get_val(regs, cmd[1]) > 0:
+                ip += get_val(regs, cmd[2])
+                continue
+        ip += 1
+
+    return last_sound
+
+def part2(instructions):
+    regs = [defaultdict(int), defaultdict(int)]
+    regs[0]['p'] = 0
+    regs[1]['p'] = 1
+
+    queues = [deque(), deque()]
+    ip = [0, 0]
+    waiting = [False, False]
+    send_count = 0
+
+    while True:
+        if waiting[0] and waiting[1]:
+            break
+        if (ip[0] < 0 or ip[0] >= len(instructions)) and (ip[1] < 0 or ip[1] >= len(instructions)):
+            break
+
+        for prog in [0, 1]:
+            if ip[prog] < 0 or ip[prog] >= len(instructions):
+                waiting[prog] = True
+                continue
+
+            cmd = instructions[ip[prog]]
+            op = cmd[0]
+
+            if op == 'snd':
+                val = get_val(regs[prog], cmd[1])
+                queues[1 - prog].append(val)
+                if prog == 1:
+                    send_count += 1
+                waiting[prog] = False
+            elif op == 'set':
+                regs[prog][cmd[1]] = get_val(regs[prog], cmd[2])
+                waiting[prog] = False
+            elif op == 'add':
+                regs[prog][cmd[1]] += get_val(regs[prog], cmd[2])
+                waiting[prog] = False
+            elif op == 'mul':
+                regs[prog][cmd[1]] *= get_val(regs[prog], cmd[2])
+                waiting[prog] = False
+            elif op == 'mod':
+                regs[prog][cmd[1]] %= get_val(regs[prog], cmd[2])
+                waiting[prog] = False
+            elif op == 'rcv':
+                if queues[prog]:
+                    regs[prog][cmd[1]] = queues[prog].popleft()
+                    waiting[prog] = False
+                else:
+                    waiting[prog] = True
                     continue
-            case _:
-                print(l)
-        index += 1
-    return last_played
+            elif op == 'jgz':
+                if get_val(regs[prog], cmd[1]) > 0:
+                    ip[prog] += get_val(regs[prog], cmd[2])
+                    continue
+                waiting[prog] = False
 
+            ip[prog] += 1
 
-def part2(data):
-    return
-    incoming = yield
-    yield outgoing
+    return send_count
 
-if __name__ == "__main__":
-    d = sys.stdin.read().split("\n")
-    print("part 1:", part1(d))
-    print("part 2:", part2(d))
-    # print("part 1:", solve(d, 1))
-    # print("part 2:", solve(d, 2))
+if __name__ == '__main__':
+    instructions = parse('/Users/adamemery/advent-of-code/2017/input18')
+    print(f"Part 1: {part1(instructions)}")
+    print(f"Part 2: {part2(instructions)}")

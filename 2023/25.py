@@ -1,42 +1,84 @@
-import sys
-from collections import deque
-from itertools import combinations
-from math import prod
+from collections import defaultdict, deque
+import random
 
+def parse(filename):
+    graph = defaultdict(set)
+    with open(filename) as f:
+        for line in f:
+            if line.strip():
+                parts = line.strip().replace(':', '').split()
+                node = parts[0]
+                for neighbor in parts[1:]:
+                    graph[node].add(neighbor)
+                    graph[neighbor].add(node)
+    return graph
 
-data = sys.stdin.read().split("\n")
-connections = set()
-for l in data:
-    l.replace(":", "").split()
-    k, *v = l.replace(":", "").split()
-    for c in v:
-        connections.add(tuple(sorted([k, c])))
+def bfs_path(graph, start, end):
+    """Find a path from start to end using BFS."""
+    queue = deque([(start, [start])])
+    visited = {start}
+    while queue:
+        node, path = queue.popleft()
+        if node == end:
+            return path
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+    return None
 
-for wires in combinations(connections, 3):
-    cons = connections.copy()
-    for w in wires:
-        cons.remove(w)
-    out = []
-    for i in range(2):
-        visited = set()
-        q = deque(list(cons)[0])
-        while q:
-            c = q.popleft()
-            if c in visited:
-                continue
-            visited.add(c)
-            for n in cons:
-                if c in n:
-                    q.append(n[0] if n[0] != c else n[1])
-        out.append(len(visited))
-        cons = set(c for c in cons if c[0] not in visited)
-        cons.difference_update(visited)
-        if len(cons) == 0 and len(out) == 2:
-            print(prod(out))
-            exit()
-        if len(cons) == 0:
-            break
+def count_component(graph, start):
+    """Count nodes in connected component containing start."""
+    visited = set()
+    queue = deque([start])
+    while queue:
+        node = queue.popleft()
+        if node in visited:
+            continue
+        visited.add(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                queue.append(neighbor)
+    return len(visited)
 
-# works for part 1 sample
-# actual input is too big for this to work
-# graphviz -> pdf -> slipt pdf in two -> copy all text and remove white space -> divide by 3
+def find_min_cut(graph):
+    """Find the 3 edges to cut using edge frequency in random paths."""
+    nodes = list(graph.keys())
+    edge_count = defaultdict(int)
+
+    # Sample random paths and count edge usage
+    for _ in range(200):
+        a, b = random.sample(nodes, 2)
+        path = bfs_path(graph, a, b)
+        if path:
+            for i in range(len(path) - 1):
+                edge = tuple(sorted([path[i], path[i + 1]]))
+                edge_count[edge] += 1
+
+    # Most used edges are likely the bridge edges
+    top_edges = sorted(edge_count.items(), key=lambda x: -x[1])[:3]
+
+    # Remove these edges and check if we get two components
+    for (a, b), _ in top_edges:
+        graph[a].remove(b)
+        graph[b].remove(a)
+
+    # Count component sizes
+    start = nodes[0]
+    size1 = count_component(graph, start)
+    size2 = len(nodes) - size1
+
+    return size1 * size2
+
+def part1(graph):
+    # Make a copy since we'll modify it
+    graph_copy = defaultdict(set)
+    for node, neighbors in graph.items():
+        graph_copy[node] = neighbors.copy()
+
+    return find_min_cut(graph_copy)
+
+if __name__ == '__main__':
+    graph = parse('/Users/adamemery/advent-of-code/2023/input25')
+    print(f"Part 1: {part1(graph)}")
+    print(f"Part 2: (free star)")

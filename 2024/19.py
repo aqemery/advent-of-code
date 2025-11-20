@@ -1,29 +1,28 @@
-import sys
-from collections import defaultdict, Counter, deque
-from itertools import combinations, permutations, batched, chain
-from math import prod
-from dataclasses import dataclass
 from functools import cache
-from statistics import median
-import re
-import heapq
 
+def parse(filename):
+    with open(filename) as f:
+        parts = f.read().strip().split('\n\n')
+    patterns = tuple(p.strip() for p in parts[0].split(','))
+    designs = parts[1].split('\n')
+    return patterns, designs
 
-def solve(data, times):
-    return
+def solve(patterns, designs):
+    @cache
+    def count_ways(design):
+        if not design:
+            return 1
+        total = 0
+        for p in patterns:
+            if design.startswith(p):
+                total += count_ways(design[len(p):])
+        return total
 
+    ways = [count_ways(d) for d in designs]
+    return sum(1 for w in ways if w > 0), sum(ways)
 
-def part1(data):
-    return
-
-
-def part2(data):
-    return
-
-
-if __name__ == "__main__":
-    d = sys.stdin.read().split("\n")
-    print("part 1:", part1(d))
-    print("part 2:", part2(d))
-    # print("part 1:", solve(d, 1))
-    # print("part 2:", solve(d, 2))
+if __name__ == '__main__':
+    patterns, designs = parse('/Users/adamemery/advent-of-code/2024/input19')
+    p1, p2 = solve(patterns, designs)
+    print(f"Part 1: {p1}")
+    print(f"Part 2: {p2}")

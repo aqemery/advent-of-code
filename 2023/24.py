@@ -1,32 +1,13 @@
-import sys
-from itertools import combinations, count
-from collections import defaultdict
+from itertools import combinations
 
-
-def line(p1, p2):
-    x1, y1 = p1
-    x2, y2 = p2
-    return (y1 - y2), (x2 - x1), -(x1 * y2 - x2 * y1)
-
-
-def intersection(line1, line2):
-    dy1, dx1, dxy1 = line(line1[0], line1[1])
-    dy2, dx2, dxy2 = line(line2[0], line2[1])
-    d = dy1 * dx2 - dx1 * dy2
-    dx = dxy1 * dx2 - dx1 * dxy2
-    dy = dy1 * dxy2 - dxy1 * dy2
-    if d != 0:
-        return dx / d, dy / d
-    return False
-
-
-def ray_check(pos, vol, intersect):
-    if vol > 0 and intersect < pos:
-        return False
-    elif vol < 0 and intersect > pos:
-        return False
-    return True
-
+def parse(filename):
+    with open(filename) as f:
+        data = []
+        for line in f:
+            if line.strip():
+                parts = line.strip().replace('@', ',').split(',')
+                data.append([int(x.strip()) for x in parts])
+        return data
 
 def part1(data):
     min_v = 200000000000000
@@ -37,68 +18,106 @@ def part1(data):
         ax, ay, _, avx, avy, _ = a
         bx, by, _, bvx, bvy, _ = b
 
-        a = ((ax, ay), (ax + avx, ay + avy))
-        b = ((bx, by), (bx + bvx, by + bvy))
-        if intersect := intersection(a, b):
-            xint, yint = intersect
-            for pos, vol, inter in [
-                (ax, avx, xint),
-                (bx, bvx, xint),
-                (ay, avy, yint),
-                (by, bvy, yint),
-            ]:
-                if not ray_check(pos, vol, inter):
-                    break
-            else:
-                if (min_v < xint < max_v) and (min_v < yint < max_v):
-                    total += 1
+        # Find intersection of two lines
+        # Line a: (ax + t*avx, ay + t*avy)
+        # Line b: (bx + s*bvx, by + s*bvy)
+        det = avx * (-bvy) - avy * (-bvx)
+        if det == 0:
+            continue
+
+        t = ((bx - ax) * (-bvy) - (by - ay) * (-bvx)) / det
+        s = ((bx - ax) * (-avy) - (by - ay) * (-avx)) / det
+
+        if t < 0 or s < 0:
+            continue
+
+        xint = ax + t * avx
+        yint = ay + t * avy
+
+        if min_v <= xint <= max_v and min_v <= yint <= max_v:
+            total += 1
+
     return total
 
-
 def part2(data):
-    positions = defaultdict(list)
-    print(len(data))
-    exit()
-    for times in count():
-        for i, (x, y, z, vx, vy, vz) in enumerate(data):
-            positions[times].append((x, y, z, i))
-            print(x, y, z)
-    
-        data = [(x+vx, y+vy, z+vz, vx, vy, vz) for x, y, z, vx, vy, vz in data]
-        if times < 1000:
-            continue 
-        break
+    # Use Z3 solver for the system of equations
+    try:
+        from z3 import Int, Solver, sat
 
-    print(positions)
-        # if not some:
-        #     break
+        x, y, z = Int('x'), Int('y'), Int('z')
+        vx, vy, vz = Int('vx'), Int('vy'), Int('vz')
 
-        
+        solver = Solver()
 
-        
-            # print(x, y, z, vx, vy, vz)
+        # For each hailstone, there exists a time t >= 0 where they meet
+        for i, (hx, hy, hz, hvx, hvy, hvz) in enumerate(data[:3]):  # Only need 3 hailstones
+            t = Int(f't{i}')
+            solver.add(t >= 0)
+            solver.add(x + vx * t == hx + hvx * t)
+            solver.add(y + vy * t == hy + hvy * t)
+            solver.add(z + vz * t == hz + hvz * t)
 
-        # x_step = data[0][0] + data[1][0]
-        # # print(x_step)
+        if solver.check() == sat:
+            model = solver.model()
+            return model.eval(x + y + z).as_long()
+    except ImportError:
+        pass
 
-        # for i in range(1, len(data)):
-        #     if data[i][0] + data[i-1][0] != x_step:
-        #         break
-        # else:
-        #     print("maybe", data)
-        # # break
-    
-    
+    # Fallback: mathematical approach
+    # Find rock velocity by looking for common differences
+    from collections import defaultdict
 
+    def find_velocity(pos_vel_pairs, coord_idx):
+        # Group hailstones by velocity
+        by_vel = defaultdict(list)
+        for h in data:
+            by_vel[h[3 + coord_idx]].append(h[coord_idx])
 
+        possible = None
+        for vel, positions in by_vel.items():
+            if len(positions) < 2:
+                continue
+            positions = sorted(positions)
+            for i in range(len(positions) - 1):
+                diff = positions[i + 1] - positions[i]
+                candidates = set()
+                for rv in range(-500, 501):
+                    if rv != vel and diff % (rv - vel) == 0:
+                        candidates.add(rv)
+                if possible is None:
+                    possible = candidates
+                else:
+                    possible &= candidates
 
+        return possible.pop() if possible and len(possible) == 1 else None
 
-    return
+    rvx = find_velocity(data, 0)
+    rvy = find_velocity(data, 1)
+    rvz = find_velocity(data, 2)
 
+    if rvx is None or rvy is None or rvz is None:
+        return "Could not solve - install z3-solver"
 
-if __name__ == "__main__":
-    d = sys.stdin.read().split("\n")
-    d = [[int(x) for s in l.split("@") for x in s.split(",")] for l in d]
+    # Find position using first two hailstones
+    h0 = data[0]
+    h1 = data[1]
 
-    print("part 1:", part1(d))
-    print("part 2:", part2(d))
+    # Solve for intersection time
+    # h0x + t * h0vx = rx + t * rvx
+    # t = (rx - h0x) / (h0vx - rvx)
+    ma = (h0[4] - rvy) / (h0[3] - rvx)
+    mb = (h1[4] - rvy) / (h1[3] - rvx)
+    ca = h0[1] - ma * h0[0]
+    cb = h1[1] - mb * h1[0]
+
+    rx = int((cb - ca) / (ma - mb))
+    ry = int(ma * rx + ca)
+    t = (rx - h0[0]) // (h0[3] - rvx)
+    rz = h0[2] + (h0[5] - rvz) * t
+
+    return rx + ry + rz
+
+if __name__ == '__main__':
+    data = parse('/Users/adamemery/advent-of-code/2023/input24')
+    print(f"Part 1: {part1(data)}")
+    print(f"Part 2: {part2(data)}")
