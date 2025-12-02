@@ -6,7 +6,6 @@ pointer = 50
 p1 = 0
 p2 = 0
 for line in lines:
-    print("====", line)
     dir, *vals = line
     vals = int("".join(vals))
 
